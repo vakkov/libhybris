@@ -70,18 +70,25 @@ test_egl_configs_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/egl/libEGL.la
 
-test_glesv2_SOURCES = test_glesv2.c
-test_glesv2_CFLAGS = \
+test_glesv2_SOURCES = test_glesv2.cpp
+test_glesv2_CXXFLAGS = \
 	-I$(top_srcdir)/include \
-	$(ANDROID_HEADERS_CFLAGS)
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync
+
 if WANT_MESA
-test_glesv2_CFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
+test_glesv2_CXXFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
 endif
 test_glesv2_LDADD = \
 	-lm \
 	$(top_builddir)/common/libhybris-common.la \
+	$(top_builddir)/egl/platforms/hwcomposer/libhybris-hwcomposerwindow.la \
+	$(top_builddir)/egl/platforms/common/libhybris-eglplatformcommon.la \
 	$(top_builddir)/egl/libEGL.la \
-	$(top_builddir)/glesv2/libGLESv2.la
+	$(top_builddir)/glesv2/libGLESv2.la \
+	$(top_builddir)/hardware/libhardware.la
 
 test_hwcomposer_SOURCES = test_hwcomposer.cpp
 test_hwcomposer_CXXFLAGS = \
